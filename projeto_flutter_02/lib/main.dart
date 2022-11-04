@@ -5,9 +5,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,61 +14,75 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ListaDeTarefas(title: 'Lista de Tarefas'),
+      home: const Calcular(),
     );
   }
 }
 
-class ListaDeTarefas extends StatefulWidget {
-  const ListaDeTarefas({Key? key, required this.title}) : super(key: key);
+class Calcular extends StatefulWidget {
+  const Calcular({super.key});
 
-  final String title;
+  final String title = "Calculadora";
 
   @override
-  State<ListaDeTarefas> createState() => _ListaDeTarefasState();
+  State<Calcular> createState() => _CalcularState();
 }
 
-class _ListaDeTarefasState extends State<ListaDeTarefas> {
-  TextEditingController campoDeTexto = TextEditingController();
+class _CalcularState extends State<Calcular> {
+  var v1 = TextEditingController();
+  var v2 = TextEditingController();
+  double soma = 0;
 
-  void adicionarTarefa() {}
-
+  void somar(){
+    setState((){
+      double a  = double.parse(v1.text);
+    double b  = double.parse(v2.text);
+    soma = a + b ;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        centerTitle: true,
       ),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                      child: TextField(
-                    decoration: const InputDecoration(
-                        labelText: "Tarefa a fazer",
-                        border: OutlineInputBorder()),
-                    controller: campoDeTexto,
-                  )),
-                  const SizedBox(width: 8),
-                  ElevatedButton(
-                    onPressed: adicionarTarefa,
-                    child: const Text("Adicionar"),
-                  ),
-                ],
-              ),
-            ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextField(
+            controller: v1,
+            decoration: const InputDecoration(
+                labelText: "Informe o primeiro valor",
+                border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 3, color: Colors.black))),
           ),
-        ),
-      ),
+          const SizedBox(
+            height: 30,
+          ),
+          TextField(
+            controller: v2,
+              decoration: const InputDecoration(
+                  labelText: "Informe o segundo valor",
+                  border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 3, color: Colors.red)))),
+          const SizedBox(
+            height: 30,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              somar();
+            },
+            child: const Text("Somar")
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Text("$soma")
+        ],
+      )),
     );
   }
 }
